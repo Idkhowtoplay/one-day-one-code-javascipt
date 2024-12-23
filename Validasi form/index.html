@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validasi Form Sederhana</title>
+    <style>
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Form Registrasi</h1>
+    <form id="formRegistrasi">
+        <label for="username">Nama Pengguna:</label>
+        <input type="text" id="username" name="username"><br>
+        <span id="errorUsername" class="error"></span><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+        <span id="errorEmail" class="error"></span><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+        <span id="errorPassword" class="error"></span><br>
+
+        <label for="confirmPassword">Konfirmasi kata sandi:</label>
+        <input type="password" id="confirmPassword"><br>
+        <div id="errorConfirmPassword" class="error"></div><br>
+
+        <button type="submit">Daftar</button>
+    </form>
+
+    <script src="script.js"></script>
+    
+</body>
+</html>
