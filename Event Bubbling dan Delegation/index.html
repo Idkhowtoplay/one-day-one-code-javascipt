@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Bubbling dan Delegation</title>
+    <style>
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <input type="text" id="inputItem" placeholder="Masukkan item">
+    <button id="btnAdd">Tambah</button>
+    <ul id="taskList">
+        <li>Belajar JavaScript <button class="delete">Hapus</button></li>
+        <li>Mengerjakan Proyek <button class="delete">Hapus</button></li>
+        <li>Membaca Buku <button class="delete">Hapus</button></li>
+    </ul>
+    <script src="script.js"></script>
+</body>
+</html>
