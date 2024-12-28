@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Tebak Angka</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #feedback {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #attempts {
+            margin-top: 10px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Tebak Angka</h1>
+    <p>Tebak angka antara 1 dan 100:</p>
+    <label for="minRange">Rentang Angka: </label>
+    <input type="number" id="minRange" placeholder="Min" value="1">
+    <input type="number" id="maxRange" placeholder="Max" value="100">
+    <button id="setRange">Atur Rentang</button>
+    <input type="number" id="guessInput" placeholder="Masukkan angka">
+    <button id="checkButton">Cek Tebakan</button>
+    <button id="resetButton">Reset</button>
+    <div id="feedback"></div>
+    <div id="attempts"></div>
+    <script src="script.js"></script>
+    
+</body>
+</html>
