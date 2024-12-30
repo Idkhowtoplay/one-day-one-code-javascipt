@@ -16,23 +16,72 @@ let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 
-function saveState() {
-    history.push(canvas.toDataURL());
-    if (history.length > 10) history.shift();
-    redoStack = [];
+function redrawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const action of history) {
+        ctx.strokeStyle = action.color;
+        ctx.lineWidth = action.lineWidth;
+        ctx.fillStyle = action.color;
+
+        if (action.type === "line") {
+            ctx.beginPath();
+            ctx.moveTo(action.startX, action.startY);
+            ctx.lineTo(action.endX, action.endY);
+            ctx.stroke();
+        } else if (action.type === "circle") {
+            ctx.beginPath();
+            ctx.arc(action.x, action.y, action.radius, 0, Math.PI * 2);
+            ctx.fill();
+        } else if (action.type === "rectangle") {
+            ctx.fillRect(action.x, action.y, action.width, action.height);
+        }
+    }
 }
 
 canvas.addEventListener("mousedown", (e) => {
-    if (tool === "draw") {
+    if (tool === "circle") {
+        const action = {
+            type: "circle",
+            x: e.offsetX,
+            y: e.offsetY,
+            radius: 50,
+            color: colorPicker.value,
+        };
+        history.push(action);
+        redoStack = [];
+        redrawCanvas();
+    } else if (tool === "rectangle") {
+        const action = {
+            type: "rectangle",
+            x: e.offsetX,
+            y: e.offsetY,
+            width: 100,
+            height: 50,
+            color: colorPicker.value,
+        };
+        history.push(action);
+        redoStack = [];
+        redrawCanvas();
+    } else {
         isDrawing = true;
         [lastX, lastY] = [e.offsetX, e.offsetY];
-        saveState();    
     }
 });
 
 canvas.addEventListener("mousemove", (e) => {
     if (!isDrawing || tool !== "draw") return;
 
+    const action = {
+        type: "line",
+        startX: lastX,
+        startY: lastY,
+        endX: e.offsetX,
+        endY: e.offsetY,
+        color: colorPicker.value,
+        lineWidth: lineWidthInput.value,
+    };
+    history.push(action);
+    redoStack = [];
     ctx.strokeStyle = colorPicker.value;
     ctx.lineWidth = lineWidthInput.value;
     ctx.lineCap = "round";
@@ -44,68 +93,33 @@ canvas.addEventListener("mousemove", (e) => {
     [lastX, lastY] = [e.offsetX, e.offsetY];
 });
 
+canvas.addEventListener("mouseup", () => (isDrawing = false));
+canvas.addEventListener("mouseout", () => (isDrawing = false));
+
 undoButton.addEventListener("click", () => {
     if (history.length === 0) return;
     redoStack.push(history.pop());
-    const imgData = new Image();
-    const lastState = history[history.length - 1];
-    if (lastState) {
-        imgData.src = lastState;
-        imgData.onload = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(imgData, 0, 0);
-        }
-    } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+    redrawCanvas();
 });
 
 redoButton.addEventListener("click", () => {
     if (redoStack.length === 0) return;
-    const redoState = redoStack.pop();
-    history.push(redoState);
-    const imgData = new Image();
-    imgData.src = redoState;
-    imgData.onload = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(imgData, 0, 0);
-    }
+    history.push(redoStack.pop());
+    redrawCanvas();
 });
 
-canvas.addEventListener("mousedown", (e) => {
-    if (tool === "circle") {
-        saveState();
-        const radius = 50;
-        ctx.beginPath();
-        ctx.arc(e.offsetX, e.offsetY, radius, 0, Math.PI * 2);
-        ctx.fillStyle = colorPicker.value;
-        ctx.fill();
-    }
+clearButton.addEventListener("click", () => {
+    history = [];
+    redoStack = [];
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
-
-canvas.addEventListener("mousedown", (e) => {
-    if (tool === "rectangle") {
-        saveState();
-        const width = 100;
-        const height = 50;
-        ctx.fillStyle = colorPicker.value;
-        ctx.fillRect(e.offsetX, e.offsetY, width, height);
-    }
-})
 
 downloadButton.addEventListener("click", () => {
     const link = document.createElement("a");
     link.download = "gambar_canvas.png";
     link.href = canvas.toDataURL();
     link.click();
-})
-
-clearButton.addEventListener("click", () => {
-    saveState();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
-canvas.addEventListener("mouseup", () => (isDrawing = false));
-canvas.addEventListener("mouseout", () => (isDrawing = false));
-circleTool.addEventListener("click", () => tool = "circle");
-rectangleTool.addEventListener("click", () => tool = "rectangle");
+circleTool.addEventListener("click", () => (tool = "circle"));
+rectangleTool.addEventListener("click", () => (tool = "rectangle"));
