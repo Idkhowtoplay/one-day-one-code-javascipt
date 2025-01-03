@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+.container {
+    display: flex;
+    gap: 20px;
+}
+.box {
+    width: 150px;
+    height: 150px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    display: flex;
+    flex-wrap: wrap; /* Hindari elemen menjadi terlalu kecil */
+    justify-content: center;
+    align-items: center;
+}
+.item {
+    width: 100px;
+    height: 100px;
+    background-color: #3498db;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    cursor: grab;
+    box-sizing: border-box; /* Pastikan padding dan border tidak memengaruhi ukuran */
+}
