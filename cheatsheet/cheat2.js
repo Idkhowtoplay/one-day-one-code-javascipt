@@ -117,6 +117,14 @@ a /= 3; // a = a / 3
 a %= 3; // a = a % 3
 a **= 3; // a = a ** 3
 
+// Expression Operators
+console.log(typeof 42); // typeof: Returns the type of a value
+console.log(10 > 5 ? "Yes" : "No"); // Ternary operator
+let b = null ?? "Default value"; // Nullish coalescing operator
+console.log(b); // Outputs "Default value"
+let c = a || "Fallback value"; // Logical OR assignment
+console.log(c);
+
 // Objects
 const person = {
   firstName: "John",
